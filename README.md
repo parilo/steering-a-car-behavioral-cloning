@@ -1,2 +1,3 @@
 # steering-a-car-behavioral-cloning
-Controlling steering wheel of a car in simulator
+
+Here is behavioral cloning project, that I did for [Udacity Self-Driving Car Nanodegree](udacity.com/drive) project. Behavioral cloning is 
