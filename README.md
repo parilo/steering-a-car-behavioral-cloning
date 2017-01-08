@@ -1,3 +1,6 @@
+
+[![Steery - The Artificial Intelligence driver](http://img.youtube.com/vi/--jKKhA8dys/0.jpg)](https://www.youtube.com/watch?v=--jKKhA8dys)
+
 # Steering a car
 
 Here is behavioral cloning project, that I did as part of [Udacity Self-Driving Car Nanodegree](https://www.udacity.com/drive).
