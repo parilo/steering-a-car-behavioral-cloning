@@ -27,7 +27,7 @@ So I decided to use similar to Nvidia CNN.
 ![CNN architecture](https://github.com/parilo/steering-a-car-behavioral-cloning/blob/master/Proj3-CNN.png "CNN architecture")
 
 Why this architecture? So, I used grayscaled and normalized to interval [-0.5, 0.5] images to reduce memory and GPU usage on training. That's why I have 1 channel image as input.
-I tried to use minimalistic neural network but it's hard to say that it is tiny network. It has 4 151 384 parameters. 182 328 and 3 969 056 parameters
+I tried to use minimalistic neural network but it's hard to say that it is tiny network. It has 3 129 152 parameters. 110 368 and 3 018 784 parameters
 for CNN and fully connected part respectively. It is big number of parameters and additional experimenting probably may decrease that number. Also I
 used fully connected layer with 5 hidden layers to allow fully connected network to have its own lower, middle and high level features as it is
 done in CNN. Also I used [dropout](https://en.wikipedia.org/wiki/Convolutional_neural_network#Dropout) with 0.5 probability on all layers except last 3 
