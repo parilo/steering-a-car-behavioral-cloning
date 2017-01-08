@@ -44,7 +44,7 @@ different behavior and mix them togeather:
 
 I recorded disturbance recovery dataset by randomly making disturbance to right and recovery with left steering. So then I just excluded all right turns from that dataset.
 Also I repeated that procedure with left turns. So at the end I had 6 dataset with disturbance recovery. 3 for recovery from right and 3 for recovery from left.
-I mixed a 30% strong, 100% of medium and light disturbance and excluded 90% of straight drive samples in result dataset which have 11841 samples.
+I mixed a 50% strong, 100% of medium and light disturbance and excluded 90% of straight drive samples in result dataset which have 12098 samples.
 There is 2 tracks in simulator. I used only track 1 for recording samples. Track 2 will be used to test the model how good it generalizes steering a car.
 
 ![Steering distribution in the dataset](https://github.com/parilo/steering-a-car-behavioral-cloning/blob/master/dataset-steering-distribution.png "Steering distribution in the dataset")
@@ -78,9 +78,18 @@ Augmented images looks like this:
 
 For creating and training the model I used [Keras](https://keras.io/) which has big library of standard neural networks blocks. So training neural networks with Keras is pretty simple and fun :)
 For training I used only augmented samples, so model haven't seen one sample twice. That is again for preventing the overfitting. I used Adam optimizer with 1e-4 learning rate and mean squared error as loss function.
-I decided to use 96 samples batch size and 25 epochs of 38400 samples. Collected dataset I splitted into 67% train and 33% validation parts. As test dataset I used straight driving samples recorded on track 2.
+I decided to use 112 samples batch size and 30 epochs of 44800 samples. Collected dataset I splitted into 67% train and 33% validation parts. As test dataset I used straight driving samples recorded on track 2.
 I saved model on every epoch and selected one from last epochs models that is able to drive track 2. I tried several times to train and noticed that not every time it is possible to select such model. But models are close to drive track 2.
 Despite of track 2 haven't been used to record samples. And has much sharper turns (and higher complexity as for me). Training model can drive it without seeing a single image from it. That fact was very surprising for me.
+
+How to improve the model? There is different ways. So firstly we need much more sophisticated environment in the simulator. Including many other types of turns and crossings,
+road materials, off-road places, weather effects like rain, snow, fog, ice, etc. Also we need other cars, pedestians, bicyclists, motorcycles and many other traffic participants.
+And possibly it is good to have function that can instantly place the car in random road situation, so it will possibly way to get more behavior rich dataset. Maybe it is helpful
+to have such simulator that can randomly generate whole the environment on request.
+Secondly, since we may have multiple images on a car we may use 3d reconstruction to generate samples with changed point of view. Like it is done in Nvidia paper or
+more detailed. In this case we may need proper camera calibration parameters and cameras placement geometry.
+I think further improvement may be reached with reinfocement learning using the model as pretrained actor in actor-critic approach. With RL model may improve errors in driving that
+it learned from behavior cloning dataset and possibly find smarter way of driving.
 
 # How to train and run?
 
@@ -105,8 +114,9 @@ python drive.py model.json
 ```
 Already trained model is included. You can try it :)
 
+Warning: simulator is not synchronised to drive.py. Make sure that simualtor and drive.py works without lag, use possible lower quality in simulator and GPU for CNN if possible.
+Lags can significantly influence driving so it will look like very poor driving quality.
+
 # Conclusion
 
 I found this approach very useful and I think it can be used in other simulators and games such as GTA or TORCS. Or even other type of games maybe.
-Also I think it can be used as pretraining of actor in actor-critic reinforcement learning and may significantly decrease
-learning in RL.

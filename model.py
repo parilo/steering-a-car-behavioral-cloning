@@ -145,7 +145,7 @@ steering, center_camera = load_datasets (datasets)
 #datasets with recovering from left divergence
 steering_lr, center_camera_lr = load_datasets ([
         #strong divergence, using only 1/4 of the dataset
-        ('record-left-recover', 0.3),
+        ('record-left-recover', 0.5),
         #medium divergence
         ('record-left-recover/2', 1),
         #light divergence
@@ -154,7 +154,7 @@ steering_lr, center_camera_lr = load_datasets ([
 
 #datasets with recovering from right divergence
 steering_rr, center_camera_rr = load_datasets ([
-        ('record-right-recover', 0.3),
+        ('record-right-recover', 0.5),
         ('record-right-recover/2', 1),
         ('record-right-recover/3', 1),
     ])
@@ -226,8 +226,8 @@ def augment_image (image):
     image = np.add(image, brightness)
     
     #random squares
-    rect_w = 25 #int (0.5 * (w+h)/2)
-    rect_h = 25 #int (0.5 * (w+h)/2)
+    rect_w = 25
+    rect_h = 25
     rect_count = 30
     for i in range (rect_count):
         pt1 = (rand.randint (0, w), rand.randint (0, h))
@@ -317,36 +317,36 @@ def augment_generator (images_arr, steering_arr, batch_size):
 model = Sequential ([
         Reshape ((160, 320, 1), input_shape=(160, 320)),
         
-        Convolution2D (24, 7, 7, border_mode='same'),
+        Convolution2D (24, 8, 8, border_mode='valid'),
         MaxPooling2D (pool_size=(2, 2)),
         Dropout (0.5),
         Activation ('relu'),
 
-        #80x160
-        Convolution2D (36, 5, 5, border_mode='same'),
+        #77x157
+        Convolution2D (36, 5, 5, border_mode='valid'),
         MaxPooling2D (pool_size=(2, 2)),
         Dropout (0.5),
         Activation ('relu'),
 
-        #40x80
-        Convolution2D (48, 5, 5, border_mode='same'),
+        #37x77
+        Convolution2D (48, 5, 5, border_mode='valid'),
         MaxPooling2D (pool_size=(2, 2)),
         Dropout (0.5),
         Activation ('relu'),
 
-        #20x40
-        Convolution2D (64, 3, 3, border_mode='same'),
+        #17x37
+        Convolution2D (64, 3, 3, border_mode='valid'),
         MaxPooling2D (pool_size=(2, 2)),
         Dropout (0.5),
         Activation ('relu'),
 
-        #10x20
-        Convolution2D (64, 3, 3, border_mode='same'),
+        #8x18
+        Convolution2D (64, 2, 2, border_mode='valid'),
         MaxPooling2D (pool_size=(2, 2)),
         Dropout (0.5),
         Activation ('relu'),
 
-        #5x10
+        #4x9
         Flatten (),
         
         Dense (1024),
@@ -387,8 +387,8 @@ valid_dataset_images, valid_steering = valid
 
 print (len(train_dataset_images), len (valid_dataset_images))
 
-batch_size = 96
-epochs = 25
+batch_size = 112
+epochs = 30
 
 class SaveModel(KerasCallback):
     def on_epoch_end(self, epoch, logs={}):
@@ -402,7 +402,7 @@ class SaveModel(KerasCallback):
 
 model.fit_generator (
     augment_generator(train_dataset_images, train_steering, batch_size),
-    samples_per_epoch=4*9600,
+    samples_per_epoch=400*112,
     nb_epoch=epochs,
     validation_data=(valid_dataset_images, valid_steering),
     callbacks = [SaveModel ()]
