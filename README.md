@@ -56,7 +56,7 @@ Left picture shows steering distribution in the dataset and right picture shows 
 
 # Dataset augmentation
 
-11841 samples is not big enough dataset to train a good quality model because of overfitting. That's why we need to augment our dataset with generated samples. Our sample is image and corresponding steering wheel position.
+12098 samples is not big enough dataset to train a good quality model because of overfitting. That's why we need to augment our dataset with generated samples. Our sample is image and corresponding steering wheel position.
 Here is an example of input image.
 
 ![Dataset image example](https://github.com/parilo/steering-a-car-behavioral-cloning/blob/master/dataset-image-example.png "Dataset image example")
@@ -83,7 +83,7 @@ For creating and training the model I used [Keras](https://keras.io/) which has 
 For training I used only augmented samples, so model haven't seen one sample twice. That is again for preventing the overfitting. I used Adam optimizer with 1e-4 learning rate and mean squared error as loss function.
 I decided to use 112 samples batch size and 30 epochs of 44800 samples. Collected dataset I splitted into 67% train and 33% validation parts. As test dataset I used straight driving samples recorded on track 2.
 I saved model on every epoch and selected one from last epochs models that is able to drive track 2. I tried several times to train and noticed that not every time it is possible to select such model. But models are close to drive track 2.
-Despite of track 2 haven't been used to record samples. And has much sharper turns (and higher complexity as for me). Training model can drive it without seeing a single image from it. That fact was very surprising for me.
+Despite of track 2 haven't been used to record samples and has much sharper turns (and higher complexity as for me). Training model can drive it without seeing a single image from it. That fact was very surprising for me.
 
 How to improve the model? There is different ways. So firstly we need much more sophisticated environment in the simulator. Including many other types of turns and crossings,
 road materials, off-road places, weather effects like rain, snow, fog, ice, etc. Also we need other cars, pedestians, bicyclists, motorcycles and many other traffic participants.
@@ -117,8 +117,8 @@ python drive.py model.json
 ```
 Already trained model is included. You can try it :)
 
-Warning: simulator is not synchronised to drive.py. Make sure that simualtor and drive.py works without lag, use possible lower quality in simulator and GPU for CNN if possible.
-Lags can significantly influence driving so it will look like very poor driving quality.
+Warning: simulator is not synchronised to drive.py. Make sure that simualtor and drive.py works without lag, use the most lower quality in simulator and GPU for CNN if ot is possible
+to avoid lags. Lags can significantly influence driving so it will look like very poor driving quality.
 
 # Conclusion
 
